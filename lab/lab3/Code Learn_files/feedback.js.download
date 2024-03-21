@@ -1,0 +1,272 @@
+﻿$(function () {
+    let uploadtedFile = [];
+    let domainFeedbackService = "https://feedback.codelearn.io";
+    let domainUploadService = "https://upload.codelearn.io";
+    let apiFeedback = {
+        saveFeedback: domainFeedbackService + "/feedback/save-feedback"
+    }
+    let apiUpload = {
+        upload: domainUploadService + "/upload/uploadFile"
+    }
+    const token = sessionStorage.getItem(ACCESSKEY);
+
+    const clearData = function () {
+        //$('#contact_email').val("");
+        $('#contact_message').val("");
+        $('#contact_phone').val("");
+        $("#contact_priority").val("Medium");
+        $(".list-file-attach").remove();
+        $("label.error").remove();
+        $("#modal-contact-us .error").removeClass("error");
+        $(".modal-content .after-sent").hide();
+        $(".modal-content .before-sent").show();
+        uploadtedFile = [];
+    }
+
+
+    $('#modal-contact-us').on('shown.bs.modal hidden.bs.modal', function () {
+        clearData();
+    });
+
+    const checkExistFile = function (obj) {
+        for (const item of uploadtedFile) {
+            if (item.name === obj.name && item.size === obj.size && item.type === obj.type) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    const convertMB2KB = function(size) {
+        return size * 1024;
+    }
+
+    const validateFileUpload = function (fileSize, file_name) {
+        const extension = file_name.split('.').pop().toLowerCase();
+        const ImageExtension = ["png", "jpg", "jpeg", "gif", "bmp"];
+        const VideoExtension = ["mp4", "mov"];
+        const FileExtension = ["doc", "docx", "xlsx", "xls", "ppt", "pptx", "pdf", "rar"];
+
+        var isValid = true;
+        var errMessage = "";
+        let fileType = "none";
+        if (ImageExtension.indexOf(extension) > -1) {
+            fileType = "image";
+        }
+        if (VideoExtension.indexOf(extension) > -1) {
+            fileType = "video";
+        }
+        if (FileExtension.indexOf(extension) > -1) {
+            fileType = "file";
+        }
+        if (fileType === "none") {
+            return {
+                isValid: false,
+                errMessage: "The uploaded file is invalid format (accepted formats are: .pdf,.ppt,.pptx,.docx,.doc,.xlsx,.xls,.rar,.png,.jpg,.jpeg,.gif,.bmp,.mp4,.mov)"
+            };
+        }
+        let maxsize = 25
+        if (fileType === "file" && fileSize > convertMB2KB(25)) {
+            isValid = false;
+            errMessage = "Upload file size must not exceed";
+        } else if (fileType === "image" && fileSize > convertMB2KB(2)) {
+            maxsize = 2;
+            isValid = false;
+            errMessage = "Image size must not exceed";
+        } else if (fileType === "video" && fileSize > convertMB2KB(100)) {
+            maxsize = 100;
+            isValid = false;
+            errMessage = "Video size must not exceed";
+        }
+        return {
+            isValid: isValid,
+            errMessage: errMessage + " " + maxsize + "Mb"
+        };
+    };
+
+    $(document).on('click', '#modal-contact-us .delete-file-attach', function (e) {
+        e.preventDefault();
+        var fileUrl = $(this).data("fileurl");
+        $(".custom-file-input").val("");
+        var fileIndex = uploadtedFile.findIndex(function (o) {
+            return o.url == fileUrl;
+        })
+        if (fileIndex !== -1) {
+            uploadtedFile.splice(fileIndex, 1);
+        }
+        $(this).closest('.list-file-attach').remove();
+    })
+
+    $(document).on('click', '.feedback-btn', function (e) {
+        $('#modal-contact-us').modal('toggle')
+    })
+
+    $(document).on('change', '#modal-contact-us input[name="file-upload"]', function (e) {
+        let file = e.target.files;
+        if ($('#modal-contact-us .list-file-attach')) {
+            if ($('#modal-contact-us .delete-file-attach').length > 2) {
+                if (NOFICATION_GLOBAL) {
+                    NOFICATION_GLOBAL.update({ message: translate.instant("Allow maximum 3 attachments"), type: 'codecamp-danger' });
+                } else {
+                    NOFICATION_GLOBAL = $.notify(translate.instant("Allow maximum 3 attachments"), { type: 'codecamp-danger' });
+                }
+                return
+            }
+        }
+        var formData = new FormData();
+        var fileObj = {
+            name: file[0].name,
+            size: file[0].size,
+            type: file[0].type,
+            url: ""
+        };
+        formData.append('files', file[0]);
+        const fileSize = parseInt(file[0].size / 1024)
+        const fileName = file[0].name;
+        const fileUploadValidation = validateFileUpload(fileSize, fileName);
+        const supportAttach = 10;
+        if (!checkExistFile(fileObj) && fileUploadValidation.isValid) {
+            $.ajax({
+                type: "Post",
+                url: apiUpload.upload + '?type=' + supportAttach,
+                timeout: 36000,
+                data: formData,
+                contentType: false,
+                processData: false,
+                headers: {
+                    "CodelearnToken": token
+                },
+                success: function (response) {
+                    if (response.data != null) {
+                        const url = response.data.url;
+                        $('#modal-contact-us .file-attach').append(
+                            `
+                                    <div class="list-file-attach">
+                                        <div class="file-attach-name">
+                                            <i class="la la-paperclip fs-24"></i>
+                                            <span title="${file[0].name}">${file[0].name}</span>
+                                            <input class="filename" type="hidden" value="${file[0].name}">
+                                            <input class="url" type="hidden" value="${url}">
+                                        </div >
+                                        <div class="file-attach-size">
+                                            <span class="size-file-attach">${fileSize} KB</span>
+                                            <span data-fileurl="${url}" class="delete-file-attach">Xóa</span>
+                                        </div>
+                                    </div>
+                                `
+                        )
+                        fileObj.url = url;
+                        uploadtedFile.push(fileObj);
+                        $(".custom-file-input").val("");
+                    }
+                }
+            });
+        } else {
+            if (!fileUploadValidation.isValid) {
+                //EDNCommon.notify('danger', fileUploadValidation.errMessage);
+                $(".custom-file-input").val("");
+
+            } else {
+                //EDNCommon.notify('danger', translate.instant("Bạn đã có file này trong danh sách") + "!");
+                $(".custom-file-input").val("");
+            }
+        }
+    })
+
+    saveContactRequest = function () {
+        const email = $('#contact_email').val();
+        const message = $('#contact_message').val();
+        const priority = $('#contact_priority').val();
+        const phone = $('#contact_phone').val();
+        const listFileUrl = [];
+        $('#modal-contact-us .file-attach-name').each(function (i) {
+            listFileUrl.push($(this).find('.url').val());
+        });
+        $('#modal-contact-us .file-attach input[type="file"]').val('')
+        $('#modal-contact-us .list-file-attach').each(function (i) {
+            $(this).remove();
+        });
+        $("#modal-contact-us .modal-content .after-sent").show();
+        $("#modal-contact-us .modal-content .before-sent").hide();
+        $.ajax({
+            type: "Post",
+            url: apiFeedback.saveFeedback,
+            timeout: 36000,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            headers: {
+                "CodelearnToken": token
+            },
+            data: JSON.stringify({
+                ContactEmail: email,
+                Content: message,
+                PhoneNumber: phone,
+                ListUrlAttachment: listFileUrl.join(";"),
+                Priority: priority,
+            }),
+            success: function (response) {
+            },
+            error: function(response) {
+            }
+        });
+    }
+
+    translate.onLoad(function () {
+        $("#modal-contact-us").validate({
+            rules: {
+                contact_phone: {
+                    required: true,
+                    customPhoneRule: true,
+                },
+                contact_email: {
+                    required: true,
+                    customMailRule: true,
+                },
+                contact_message: {
+                    required: true,
+                    customMessage: true,
+                }
+            },
+            messages: {
+                contact_phone: {
+                    required: translate.instant("Phone is required"),
+                    customPhoneRule: translate.instant("Phone number is between 4 and 16 characters including numbers, +, () <br/>Valid phone number format: +(84)912703378 or 0912703378")
+                },
+                contact_email: {
+                    required: translate.instant("Email is required"),
+                    customMailRule: translate.instant("Valid email format: email123@abc.xyz")
+                },
+                contact_message: translate.instant("Message is required"),
+            },
+            submitHandler: function () {
+                saveContactRequest();
+                return false;
+            }
+        });
+
+        jQuery.validator.addMethod("customPhoneRule", function (value, element) {
+            const phoneValue = value.replace(/\s/g, '');
+            const regexPhoneCheck = /^\+?(\([0-9]{1,3}\))?([0-9]{4,16})$/;
+            const isValid = (phoneValue.length >= 4 && phoneValue.length <= 16 && regexPhoneCheck.test(phoneValue.trim()));
+            return this.optional(element) || isValid;
+        }, translate.instant('Please enter valid phone number.'));
+
+        jQuery.validator.addMethod(
+            "customMailRule",
+            function (value, element) {
+                var regexEmailCheck = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+                return this.optional(element) || regexEmailCheck.test(value.trim().toLowerCase());
+            },
+            translate.instant("Please enter a valid email address.")
+        );
+
+        jQuery.validator.addMethod("customMessage", function (value, element) {
+            return this.optional(element) || value.trim().length > 0;
+        }, translate.instant('Please enter valid message.'));
+    })
+
+    $(document).on('click', '#save-ticket', function (e) {
+        $("#modal-contact-us").valid();
+    });
+});
+

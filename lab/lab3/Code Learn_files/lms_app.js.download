@@ -1,0 +1,246 @@
+// =======================================
+// EDV Embedded App SDK v1.0.0
+// =======================================
+const transformCourseScriptTags = () => {
+  (function () {
+    // ---------------------------------------------------------------------------------
+    // EDV Embedded App SDK - Global Resources
+    //
+    // This is place for all EDV js api global resources like: functions, variables, configs,...
+    // ---------------------------------------------------------------------------------
+    window._EDV || (window._EDV = {});
+
+    // const DOMAIN = "http://localhost:4000";
+    const DOMAIN =
+      window.location.host === "codelearn.io" || window.location.host === "verify.codelearn.io"
+        ? "https://chat.codelearn.io"
+        : "https://test-chat.codelearn.io";
+
+    const printLog = function (...message) {
+      // console.log(...message);
+    };
+
+    const updateQueryStringParameter = function (uri, key, value) {
+      const re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+      const separator = uri.indexOf("?") !== -1 ? "&" : "?";
+      if (uri.match(re)) {
+        return uri.replace(re, "$1" + key + "=" + value + "$2");
+      } else {
+        return uri + separator + key + "=" + value;
+      }
+    };
+
+    const updateSEO = function (title, description, keywords, ogImageURL) {
+      document.title = title;
+
+      let metaDescription = document.querySelector('meta[name="description"]');
+      if (!metaDescription) {
+        metaDescription = document.createElement("meta");
+        metaDescription.name = "description";
+        document.head.appendChild(metaDescription);
+      }
+      metaDescription.content = description;
+
+      let metaKeywords = document.querySelector('meta[name="keywords"]');
+      if (!metaKeywords) {
+        metaKeywords = document.createElement("meta");
+        metaKeywords.name = "keywords";
+        document.head.appendChild(metaKeywords);
+      }
+      metaKeywords.content = keywords;
+
+      let ogImage = document.querySelector('meta[property="og:image"]');
+      if (!ogImage) {
+        ogImage = document.createElement("meta");
+        ogImage.property = "og:image";
+        document.head.appendChild(ogImage);
+      }
+      ogImage.content = ogImageURL;
+    };
+
+    _EDV.CourseLMS = (function () {
+      function CourseLMS() {}
+
+      CourseLMS.name = "CourseLMS";
+
+      CourseLMS.init = function () {
+        this.bindEvents();
+        this.bindRootDOM();
+        this.intervalUpdateNotifyCount();
+      };
+
+      CourseLMS.bindEvents = function () {
+        window.addEventListener("message", this.__addEventMessageCallback.bind(this), false);
+      };
+
+      CourseLMS.intervalUpdateNotifyCount = function () {
+        setInterval(() => {
+          const notifyElement = document.getElementById("notification-count");
+          if (notifyElement) {
+            const count = +notifyElement.innerHTML || 0;
+            window._EDV.CourseLMS.postMessage("EDV.CourseLMS.Notify.count", count);
+          }
+        }, 2000);
+      };
+
+      CourseLMS.bindRootDOM = function () {
+        const newContent = document.createElement("div");
+        let pathAndSearch = window.location.pathname + window.location.search;
+        pathAndSearch = pathAndSearch.replace("/lms", "");
+
+        const content = `<iframe src="${DOMAIN}${pathAndSearch}" allow="clipboard-read; clipboard-write" id="edv-iframe-root" style="visibility: visible; display: block"></iframe>`;
+        const containerRef = document.getElementById("edv-root");
+        if (containerRef) {
+          newContent.innerHTML = content;
+          containerRef.appendChild(newContent);
+          const styleElement = document.createElement("style");
+
+          // styleElement.textContent = `
+          //           #edv-iframe-root {
+          //             position: fixed;
+          //             visibility: visible !important;
+          //             top: 0;
+          //             left: 0;
+          //             right: 0;
+          //             bottom: 0;
+          //             height: 100vh;
+          //             width: 100%;
+          //             border: none;
+          //             background-color: #fff;
+          //             display: block;
+          //             z-index: 1000;
+          //             overflow: hidden;
+          //           }
+          //         `;
+
+          styleElement.textContent = `
+                    #edv-iframe-root {
+                      position: fixed;
+                      visibility: visible !important;
+                      top: 71px;
+                      left: 0;
+                      right: 0;
+                      bottom: 0;
+                      height: calc(100vh - 71px);
+                      width: 100%;
+                      border: none;
+                      background-color: #fff;
+                      display: block;
+                      z-index: 1000;
+                      overflow: hidden;
+                    }
+                  `;
+          document.head.appendChild(styleElement);
+        } else {
+          console.error("EDV Embedded App SDK: not load container #edv-root");
+        }
+      };
+
+      CourseLMS.__addEventMessageCallback = function (response) {
+        let responseData;
+        try {
+          responseData = JSON.parse(response.data);
+          printLog("Received: ", responseData);
+          this.exec(responseData.message, responseData.data);
+        } catch (ex) {
+          return void printLog("Received invalid JSON and cannot process the message. " + ex + " : ", response.data);
+        }
+      };
+
+      CourseLMS.exec = function (message, data) {
+        const root = document.getElementById("edv-iframe-root");
+        switch (message) {
+          case "EDV.CourseLMS.initial":
+            let intervalCounter = 0;
+            const intervalId = setInterval(function () {
+              const accessKey = sessionStorage.getItem("AccessKey");
+              const nottifyJwtToken = sessionStorage.getItem("NottifyJwtToken");
+              if (intervalCounter <= 240) {
+                intervalCounter++;
+                if (CurrentUserId && accessKey && window._EDV && window._EDV.Message) {
+                  clearInterval(intervalId);
+                  window._EDV.CourseLMS.postMessage("EDV.CourseLMS.Auth.token", {
+                    accessKey: accessKey,
+                    nottifyJwtToken: nottifyJwtToken,
+                  });
+                }
+              } else {
+                clearInterval(intervalId);
+              }
+            }, 500);
+            const refUserInfo = document.getElementsByClassName("btn--img")?.[0];
+            const username = refUserInfo?.getAttribute("alt");
+            const avatar = refUserInfo?.getAttribute("src");
+            window._EDV.CourseLMS.postMessage("EDV.CourseLMS.Auth.profile", {
+              id: CurrentUserId,
+              username: username,
+              avatar: avatar,
+            });
+            window._EDV.CourseLMS.postMessage("EDV.CourseLMS.LangGuest.initial", LANG_CURRENT);
+            break;
+          case "EDV.CourseLMS.Window.location.href":
+            window.location.href = data;
+            break;
+          case "EDV.CourseLMS.Notify.open":
+            const notifyElement = document.getElementById("notify");
+            if (notifyElement) {
+              notifyElement.click();
+            }
+            break;
+          case "EDV.CourseLMS.Window.history.pushState":
+            window.history.pushState(data.data, data.unused, data.url);
+            break;
+          case "EDV.CourseLMS.updateSEO":
+            updateSEO(data.title, data.description, data.keywords, data.ogImageURL);
+            break;
+          case "EDV.CourseLMS.fullScreen":
+            root.style.height = "100vh";
+            root.style.top = 0;
+            break;
+          case "EDV.API.Chat.openChatbox":
+            if (window._EDV && window._EDV.Message) {
+              window._EDV.Message.postMessage("EDV.API.Chat.openChatbox", data);
+            }
+            break;
+          case "EDV.CourseLMS.unFullScreen":
+            root.style.height = "calc(100vh - 71px)";
+            root.style.top = "71px";
+            break;
+          case "EDV.CourseLMS.login":
+            document.getElementById("login-header")?.click();
+            break;
+          case "EDV.CourseLMS.Window.history.replaceState":
+            window.history.replaceState(data.data, data.unused, data.url);
+            break;
+          default:
+            break;
+        }
+      };
+
+      CourseLMS.postMessage = function (message, data, elements = ["edv-iframe-root"]) {
+        let postData = JSON.stringify({
+          message: message,
+          data: data,
+        });
+        printLog("Sent: ", postData);
+        elements.forEach((e) => {
+          let root = document.getElementById(e);
+          if (root && root.contentWindow) {
+            root.contentWindow.postMessage(postData, "*");
+          }
+        });
+        return void 0;
+      };
+
+      return CourseLMS;
+    })();
+
+    window._EDV.CourseLMS.init();
+  }.call(this));
+};
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", transformCourseScriptTags, false);
+} else {
+  transformCourseScriptTags();
+}

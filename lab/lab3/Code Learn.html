@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<!-- saved from url=(0062)https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy -->
+<html lang="en-US" class="static dir-ltr codecamp-blog" dir="ltr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta http-equiv="origin-trial" content="Az520Inasey3TAyqLyojQa8MnmCALSEU29yQFW8dePZ7xQTvSt73pHazLFTK5f7SyLUJSo2uKLesEtEa9aUYcgMAAACPeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZS5jb206NDQzIiwiZmVhdHVyZSI6IkRpc2FibGVUaGlyZFBhcnR5U3RvcmFnZVBhcnRpdGlvbmluZyIsImV4cGlyeSI6MTcyNTQwNzk5OSwiaXNTdWJkb21haW4iOnRydWUsImlzVGhpcmRQYXJ0eSI6dHJ1ZX0=">
+    
+    <meta name="description" content="CodeLearn is an online platform developed by FPT Software company that helps users to learn, practice coding skills and join the developer community">
+    <meta name="author" content="CodeLearn">
+    <link rel="shortcut icon" href="https://storage.codelearn.io/Resources/Images/content/codelearn-icon.png">
+    <link rel="apple-touch-icon" href="https://storage.codelearn.io/Resources/Images/content/codelearn-icon.png">
+    <link rel="canonical" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy">
+    <link rel="alternate" hreflang="vi" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy">
+    <link rel="alternate" hreflang="en-US" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,user-scalable=0">
+
+    <title>Code Learn</title>
+
+    <!-- META FOR FACEBOOK -->
+    <meta property="og:title" content="Code Learn">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="http://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy">
+    <meta property="og:description" content="CodeLearn is an online platform developed by FPT Software company that helps users to learn, practice coding skills and join the developer community">
+    <meta property="og:image" content="https://storage.codelearn.io/Resources/Images/content/codelearn-share.jpg">
+    <meta property="fb:app_id" content="540883753774783">
+    <!-- END META FOR FACEBOOK -->
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:url" content="http://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy">
+    <meta name="twitter:title" content="Code Learn">
+    <meta name="twitter:description" content="CodeLearn is an online platform developed by FPT Software company that helps users to learn, practice coding skills and join the developer community">
+    <meta name="twitter:image" content="https://storage.codelearn.io/Resources/Images/content/codelearn-share.jpg">
+    <meta name="twitter:site" content="@Codelearn.io">
+    <meta name="twitter:creator" content="@Codelearn.io">
+    <!-- End Twitter Card -->
+
+    <meta name="google-signin-client_id" content="16523143533-ovv9lj8c7i8sv36sv3lguom0msmdk8ah.apps.googleusercontent.com">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script src="./Code Learn_files/cb=gapi.loaded_0" async=""></script><script type="text/javascript" async="" src="./Code Learn_files/recaptcha__en.js.download" crossorigin="anonymous" integrity="sha384-TFHQ2jjldnEXG6p4acHgAFLMc2UFrK8wxiDKLT6JmJU7fdX8X8zXqEhV8ZJ1n4iu"></script><script async="" src="./Code Learn_files/fbevents.js.download"></script><script async="" src="./Code Learn_files/js"></script>
+    
+
+    <script>
+        var isGetNotification = true;
+        var isNotCountComment = false;
+        var loginMSUrl = 'https://oauth.codelearn.io/Home/SignIn';
+        var s3Storage = 'https://codelearnstorage.s3.amazonaws.com';
+        var resourcePath = 'https://storage.codelearn.io/Resources';
+        var strAuthen = '';
+        var faceId = '540883753774783';
+        var gitHubId = '7ffd47a5f8cf15f50fbf';
+        var isLoadedFacebook = 'False';
+        if (strAuthen == '') {
+            var googleId = '16523143533-ovv9lj8c7i8sv36sv3lguom0msmdk8ah.apps.googleusercontent.com';
+        }
+
+        if (strAuthen == '') {
+            var LOGIN_VALIDATOR, SIGNUP_VALIDATOR;
+            function openModal(tab) {
+
+                $('#loginModal a[data-target="#' + tab + '"]').tab('show');
+                switch (tab) {
+                    case 'login':
+                        $(".btn--facebook").attr('title', 'Login with Facebook');
+                        $(".btn--google").attr('title', 'Login with Google');
+                        $("#loginModal .header-card").text('Login your account');
+                        SIGNUP_VALIDATOR && SIGNUP_VALIDATOR.resetForm();
+                        break;
+                    case 'signup':
+                        $(".btn--facebook").attr('title', 'Continue with Facebook');
+                        $(".btn--google").attr('title', 'Continue with Google');
+                        $("#loginModal .header-card").text('Register new account');
+                        LOGIN_VALIDATOR && LOGIN_VALIDATOR.resetForm();
+                        break;
+                }
+            }
+        }
+
+        if ('https://codelearn.io' == location.origin.toLocaleLowerCase()) {
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { dataLayer.push(arguments); }
+
+            gtag('js', new Date());
+            gtag('config', 'UA-141685371-1');
+            gtag('config', 'USER_MANAGEMENT');
+            gtag('set', { 'user_id': 'CodeLearn-Anonymous' });
+
+            // Measure Google Ads conversions
+            gtag('event', 'conversion', {
+                'send_to': 'USER_MANAGEMENT/CodeLearn-Anonymous',
+            });
+
+            window['GoogleAnalyticsObject'] = 'ga';
+            window['ga'] = window['ga'] || function () {
+                (window['ga'].q = window['ga'].q || []).push(arguments)
+            };
+            ga('set', 'userId', 'CodeLearn-Anonymous' );
+        }
+
+        window.fbAsyncInit = function () {
+            FB.init({
+                appId: faceId,
+                xfbml: true,
+                version: 'v11.0'
+            });
+            FB.AppEvents.logPageView();
+            isLoadedFacebook = true;
+        };
+
+        //(function (d, s, id) {
+        //    var js, fjs = d.getElementsByTagName(s)[0];
+        //    if (d.getElementById(id)) { return; }
+        //    js = d.createElement(s); js.id = id;
+        //    js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
+        //    fjs.parentNode.insertBefore(js, fjs);
+        //}(document, 'script', 'facebook-jssdk'));
+
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+        !function (f, b, e, v, n, t, s) {
+            if (f.fbq) return; n = f.fbq = function () {
+                n.callMethod ?
+                    n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+            };
+            if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+            n.queue = []; t = b.createElement(e); t.async = !0;
+            t.src = v; s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s)
+        }(window, document, 'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '700313553710795');
+        fbq('track', 'PageView');
+    </script>
+    <!-- End Facebook Pixel Code -->
+
+    <script async="" src="./Code Learn_files/app.js.download"></script>
+
+    <link href="./Code Learn_files/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="./Code Learn_files/styles.min.css" rel="stylesheet" type="text/css">
+<link href="./Code Learn_files/common.min.css" rel="stylesheet" type="text/css">
+<link href="./Code Learn_files/Site.min.css" rel="stylesheet" type="text/css">
+<link href="./Code Learn_files/login-modal.min.css" rel="stylesheet" type="text/css">
+<script src="./Code Learn_files/jquery.min.js.download" type="text/javascript"></script>
+<script src="./Code Learn_files/bootstrap.min.js.download" type="text/javascript"></script>
+<script src="./Code Learn_files/jquery-ui.min.js.download" type="text/javascript"></script>
+<script src="./Code Learn_files/jquery.validate.min.js.download" type="text/javascript"></script>
+<script src="./Code Learn_files/additional-methods.min.js.download" type="text/javascript"></script>
+<script src="./Code Learn_files/anchor.min.js.download" type="text/javascript"></script>
+<script src="./Code Learn_files/moment.min.js.download" type="text/javascript"></script>
+<script src="./Code Learn_files/moment-with-locales.min.js.download" type="text/javascript"></script>
+<script src="./Code Learn_files/api.js.download" type="text/javascript"></script>
+<script src="./Code Learn_files/login-form.min.js.download" type="text/javascript"></script>
+<script async="" defer="" src="./Code Learn_files/platform.js.download" type="text/javascript" gapi_processed="true"></script>
+<script src="./Code Learn_files/common.min.js.download" type="text/javascript"></script>
+
+
+<style>
+                    #edv-iframe-root {
+                      position: fixed;
+                      visibility: visible !important;
+                      top: 71px;
+                      left: 0;
+                      right: 0;
+                      bottom: 0;
+                      height: calc(100vh - 71px);
+                      width: 100%;
+                      border: none;
+                      background-color: #fff;
+                      display: block;
+                      z-index: 1000;
+                      overflow: hidden;
+                    }
+                  </style></head>
+<body class="hold-transition site-body skin-sku-light layout-top-nav sharing ">
+    
+
+<script>
+        //<![CDATA[
+        var LANG_CURRENT = "en";
+        const CurrentUserId = 0;
+        const S3Storage = "https://codelearnstorage.s3.amazonaws.com";
+        const NOTTIFY_USER_ACCESSKEY ='nottifyAccessKey';
+        const ACCESSKEY ='AccessKey';
+        const NOTTIFY_JWT_TOKEN ='NottifyJwtToken';
+        const IS_ADMIN = false;
+        
+        PKLService.init({ strVersion: '-1365280495', strLangCode: 'en', IsHasLogin: false, url: location.origin });
+        //]]>
+</script>
+
+        <div id="layout-navigation" class="group ">
+            <div class="zone zone-navigation">
+<article class="widget-navigation widget-menu-widget widget" style="height: 70px;">
+    
+<header class="navbar site-header">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="wrap-site-logo">
+        <a title="CodeLearn" href="https://codelearn.io/">
+            <img alt="CodeLearn nền tảng dạy lập trình trực tuyến" class="site-logo" src="./Code Learn_files/codelearn-logo.png">
+            <img alt="CodeLearn lập trình mỗi ngày" class="site-logo-mobile" src="./Code Learn_files/codelearn-mobile-logo.png">
+        </a>
+    </div>
+    <div class="wrap-right-header">
+        <input type="checkbox" id="mobile-menu-cb" name="mobile-menu-cb">
+        <label class="hamburger-button" for="mobile-menu-cb">
+            <span class="hamburger-icon"></span>
+        </label>
+        <label class="hamburger-menu-mask" for="mobile-menu-cb"></label>
+        <nav class="site-menu">
+            <ul class="menu menu-main-menu">
+                
+                
+                
+<li><a href="https://codelearn.io/learning">Learning</a>
+</li>
+<li><a href="https://codelearn.io/training">Training</a>
+</li>
+<li><a href="https://codelearn.io/fights">Fights</a>
+</li>
+<li><a href="https://codelearn.io/challenge">Challenge</a>
+</li>
+<li><a href="https://codelearn.io/evaluating">Evaluating</a>
+</li>
+<li><a href="https://codelearn.io/discussion">Discussion</a>
+</li>
+<li><a href="https://codelearn.io/leaderboard">Leaders</a>
+</li>
+<li class="current"><a href="https://codelearn.io/sharing">Chia sẻ</a>
+</li>
+                
+            </ul>
+            <div class="dropdown dropdown-language">
+                <a href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#" class="dropdown-toggle btn-dark btn--language " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="English">
+                    <img alt="English" class="button-language btn-img flag" src="./Code Learn_files/en.png">
+                </a>
+                <ul class="dropdown-menu">
+                        <li>
+                            <span class="change-lang" data-link="/language/setLanguageLocal?name=en&amp;redirectUrl=">
+                                <img alt="en" class="icon-language" src="./Code Learn_files/en.png">
+                                English
+                            </span>
+                        </li>
+                        <li>
+                            <span class="change-lang" data-link="/language/setLanguageLocal?name=vn&amp;redirectUrl=">
+                                <img alt="vn" class="icon-language" src="./Code Learn_files/vn.png">
+                                Tiếng Việt
+                            </span>
+                        </li>
+                </ul>
+            </div>
+        </nav>
+        <!-- User Menu -->
+            <!-- Menu Toggle Button -->
+    <ul class="site-user-menu">
+                <li>
+                    <button id="login-header" class="btn btn-login" data-toggle="modal" data-target="#loginModal" onclick="openModal(&#39;login&#39;)">Login</button>
+                    <button class="btn" data-toggle="modal" data-target="#loginModal" onclick="openModal(&#39;signup&#39;)">Register</button>
+                </li>
+
+    </ul>
+
+    </div>
+</header>
+</article>
+<article class="widget-navigation widget-bread-cumps-widget widget">
+    
+    <nav aria-label="breadcrumb">
+        <div class="container">
+            <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="https://codelearn.io/">Home</a></li>
+                    <li class="breadcrumb-item"><a href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy">Sharing</a></li>
+            </ol>
+        </div>
+    </nav>
+<!-- Your customer chat code -->
+<div class="fb-customerchat" attribution="setup_tool" page_id="2254662768188202" greeting_dialog_display="hide">
+</div>
+</article></div>
+        </div>
+    <main id="layout-main" class="group">
+        <div id="layout-content" class="group">
+                                        <div id="content" class="group">
+                    <div class="zone zone-content">
+
+<div id="edv-root"><div><iframe src="./Code Learn_files/ma-tran-co-ban-voi-thu-vien-numpy.html" allow="clipboard-read; clipboard-write" id="edv-iframe-root" style="visibility: visible; display: block; height: calc(-71px + 100vh); top: 71px;" width="1536" height="672"></iframe></div></div>
+
+    <script>
+        $(document).ready(function () {
+            sessionStorage.removeItem(ACCESSKEY);
+        }
+    </script>
+</div>
+                </div>
+                    </div>
+    </main>
+    <footer id="footer" class="group codecamp-footer">
+        <div class="zone zone-footer">
+
+<style>
+    .footer-column h4{
+        font-style: normal;
+    }
+</style>
+
+<div class=" main-footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-md-6 introduction footer-column">
+                <div class="logo-codelearn">
+                    <img src="./Code Learn_files/codelearn-logo.svg" alt="CodeLearn">
+                </div>
+                <p>
+                    CodeLearn is an online platform that helps users to learn, practice coding skills and join the online coding contests.
+                </p>
+                <a href="https://www.facebook.com/CodeLearnFanpage" title="Facebook" target="_blank" class="social-button">
+                    <i class="cl-icon-facebook-f"></i>
+                </a>
+                <a href="https://www.youtube.com/channel/UCpt3dSDGk5fC7uU9OeFG5ig" title="Youtube" target="_blank" class="social-button">
+                    <i class="cl-icon-youtube"></i>
+                </a>
+                <a href="https://twitter.com/codelearn_io" title="Twitter" target="_blank" class="social-button">
+                    <i class="cl-icon-twitter-full"></i>
+                </a>
+                <a href="https://www.instagram.com/codelearn.io/" title="Instagram" target="_blank" class="social-button">
+                    <i class="cl-icon-instagram"></i>
+                </a>
+            </div>
+            <div class="col-xs-12 col-sm-4 col-md-2 links footer-column">
+                <h4>Links</h4>
+                <p><a href="https://codelearn.io/learning" class="link-menu" title="Learning">Learning</a></p>
+                <p><a href="https://codelearn.io/training" class="link-menu" title="Training">Training</a></p>
+                <p><a href="https://codelearn.io/fights" class="link-menu" title="Fights">Fights</a></p>
+                
+            </div>
+
+            <div class="col-xs-12 col-sm-4 col-md-2 about footer-column">
+                <h4>Information</h4>
+                <p><a href="https://codelearn.io/aboutus" title="About Us">About Us</a></p>
+                <p><a href="https://codelearn.io/terms" title="Terms of Use">Terms of Use</a></p>
+            </div>
+            <div class="col-xs-12 col-sm-4 col-md-2 help footer-column">
+                <h4>Help</h4>
+                <p><a href="https://codelearn.io/help" title="Help">Help</a></p>
+                <p><a href="https://codelearn.io/discussion" title="Discussion">Discussion</a></p>
+                <p><a href="mailto:support@codelearn.io" title="Contact us">Contact us</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-xs-12 right-reserved">
+    <span class="powerby">
+        <img src="./Code Learn_files/logo-fpt-footer.svg" alt="Fpt software" class="fpt-logo">
+        Powered by <a href="https://codelearn.io/">CodeLearn</a>
+    </span>
+    <span class="copyright">© 2024.</span>
+    <span>All Rights Reserved. rev 2/24/2024 9:44:06 AM</span>
+</div>
+
+<!--<div class="user-display">
+    <span class="user-actions"><a href="/Users/Account/LogOn?ReturnUrl=%2Fsharing%2Fma-tran-co-ban-voi-thu-vien-numpy" rel="nofollow">Sign In</a></span>
+</div>--></div>
+    </footer>
+
+    <script src="./Code Learn_files/lms_app.js.download" type="text/javascript"></script>
+<script src="./Code Learn_files/feedback.js.download" type="text/javascript"></script>
+
+    <!-- Load Facebook SDK for JavaScript -->
+    
+    <div id="chat-root"><div><iframe allowtransparency="true" src="./Code Learn_files/chat.html" id="app-iframe-root" style="visibility: hidden; display: none;" width="1536" height="767.4876584389593"></iframe></div><div><iframe allowtransparency="true" src="./Code Learn_files/messages.html" id="app-iframe-chat-window" style="visibility: hidden; display: none;" width="1536" height="767.4876584389593"></iframe></div></div>
+    <!-- popup login/signup -->
+        <div class="modal fade modal-center" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModal">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body login-modal">
+                        <div>
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-tabs nav-fill" role="tablist">
+
+                                    <li role="presentation" class="nav-item">
+                                        <a class="nav-link" data-target="#login" aria-controls="login" role="tab" data-toggle="tab" onclick="openModal(&#39;login&#39;)">Login</a>
+                                    </li>
+                                        <li role="presentation" class="nav-item active">
+                                            <a class="nav-link" data-target="#signup" aria-controls="signup" role="tab" data-toggle="tab" onclick="openModal(&#39;signup&#39;)">Register</a>
+                                        </li>
+                                </ul>
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <h4 class="header-card">with your social network</h4>
+                                <div class="signin-options">
+                                    <button id="btn--microsoft" class="btn btn-default btn-block btn--microsoft icon-left" title="Login to FSoft account via Microsoft">
+                                        <i class="cl-icon-windows" aria-hidden="true"></i>
+                                        <span>Microsoft</span>
+                                    </button>
+                                    
+                                    <button class="btn btn-default btn-block btn--google icon-left" id="googleSignIn">
+                                        <i class="cl-icon-google-full" aria-hidden="true"></i>
+                                        <span>Google</span>
+                                    </button>
+                                    <button class="btn btn-default btn-block btn--github icon-left" onclick="githubSignIn()">
+                                        <i class="cl-icon-github-alt" aria-hidden="true"></i>
+                                        <span>Github</span>
+                                    </button>
+                                </div>
+                                <p class="label-or text-center">OR</p>
+
+                                <div role="tabpanel" class="tab-pane " id="login">
+                                    <form id="frmLogin">
+                                        <div class="form-group">
+                                            <input name="username" type="text" class="form-control" placeholder="User name" autocomplete="username">
+                                            <a href="https://codelearn.io/resend-email" title="Resend activation email" class="resend-email hidden">Resend activation email</a>
+                                        </div>
+                                        <div class="form-group" style="margin-bottom: 30px;">
+                                            <input name="password" type="password" class="form-control" placeholder="Please enter password" autocomplete="current-password">
+                                        </div>
+                                        <div class="form-button">
+                                            <button type="submit" class="btn btn-default btn-block btn-blue btn-login">Login</button>
+                                        </div>
+                                        <div class="col-md-12 registered-forgot" role="tablist">
+                                                <div class="col-md-6 text-left">
+                                                        <a data-target="#signup" aria-controls="signup" role="tab" data-toggle="tab" onclick="openModal(&#39;login&#39;)">
+                                                            Not a member? Register
+                                                        </a>
+                                                </div>
+                                                <div class="col-md-6 text-right">
+                                                    <a href="https://codelearn.io/forgot-password">I can't rememeber my password</a>
+                                                </div>
+                                        </div>
+                                        <div class="col-md-12 terms-of-use">
+                                            This site is protected by reCAPTCHA and <a href="https://codelearn.io/terms" target="_blank">Terms of Use</a> apply.
+                                        </div>
+                                    </form>
+                                </div>
+                                    <div role="tabpanel" class="tab-pane active" id="signup">
+                                        <form id="frmSignup" method="POST" action="https://codelearn.io/">
+                                            <div class="form-group">
+                                                <input name="username" type="text" class="form-control" placeholder="User name" autocomplete="username">
+                                            </div>
+                                            <div class="form-group">
+                                                <input name="email" type="email" class="form-control" placeholder="Email" autocomplete="email">
+                                            </div>
+                                            <div class="form-group">
+                                                <input name="password" type="password" class="form-control" placeholder="Password" autocomplete="current-password">
+                                            </div>
+                                            <div class="form-check">
+                                                <div class="checkbox-area">
+                                                    <input name="cbAgree" type="checkbox" value="1" class="form-check-input" id="cbAgree" data-error="#cbAgree-error">
+                                                    <label class="form-check-label" for="cbAgree">
+                                                        I agree to the <a href="https://codelearn.io/terms" target="_blank">Terms and Conditions</a> of CodeLearn
+                                                    </label>
+                                                </div>
+                                                <div id="cbAgree-error"></div>
+                                            </div>
+                                            <button type="submit" class="btn btn-default btn-block btn-blue btn-signup">Register</button>
+                                            <div class="col-md-12 registered-forgot" style="margin-bottom: 0;">
+                                                <div class="col-md-6 text-left">
+                                                    <a data-target="#login" aria-controls="login" role="tab" data-toggle="tab" onclick="openModal(&#39;login&#39;)">
+                                                        Already registered? Login
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+
+        var siteKey = '6LcMTLMUAAAAAFLLyTIvjCj7k0bAG8ZqjnaTTrQE';
+        </script>
+
+        <script type="application/ld+json">
+            {
+            "@context": "http://schema.org",
+            "@type": "Organization",
+            "name": "CodeLearn",
+            "url": "https://codelearn.io",
+            "address": "Ha Noi, Viet Nam",
+            "sameAs": [
+            "https://www.facebook.com/CodeLearnFanpage/",
+            "https://www.linkedin.com/company/codelearnio",
+            "https://twitter.com/codelearn_io"
+            ]
+            }
+        </script>
+
+    <!-- Facebook Pixel Code for Noscript-->
+    <noscript>
+        <img height="1" width="1" style="display:none" alt=""
+             src="https://www.facebook.com/tr?id=700313553710795&ev=PageView&noscript=1" />
+    </noscript>
+
+
+<div><div class="grecaptcha-badge" data-style="bottomright" style="width: 256px; height: 60px; display: block; transition: right 0.3s ease 0s; position: fixed; bottom: 14px; right: -186px; box-shadow: gray 0px 0px 5px; border-radius: 2px; overflow: hidden;"><div class="grecaptcha-logo"><iframe title="reCAPTCHA" width="0" height="0" role="presentation" name="a-q5y7p0k8trvi" frameborder="0" scrolling="no" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox allow-storage-access-by-user-activation" src="./Code Learn_files/anchor.html"></iframe></div><div class="grecaptcha-error"></div><textarea id="g-recaptcha-response-100000" name="g-recaptcha-response" class="g-recaptcha-response" style="width: 250px; height: 40px; border: 1px solid rgb(193, 193, 193); margin: 10px 25px; padding: 0px; resize: none; display: none;"></textarea></div><iframe style="display: none;" width="1536" height="767.4876584389593" src="./Code Learn_files/saved_resource.html"></iframe></div><textarea id="BFI_DATA" style="width: 1px; height: 1px; display: none;"></textarea><title> </title><div id="WidgetFloaterPanels" translate="no" style="display: none; text-align: left; direction: ltr; visibility: hidden;" class="LTRStyle"> <div id="WidgetFloater" style="display: none" onmouseover="Microsoft.Translator.OnMouseOverFloater()" onmouseout="Microsoft.Translator.OnMouseOutFloater()"> <div id="WidgetLogoPanel"> <span id="WidgetTranslateWithSpan"><span>TRANSLATE with </span><img id="FloaterLogo"></span> <span id="WidgetCloseButton" title="Exit Translation" onclick="Microsoft.Translator.FloaterOnClose()">x</span></div> <div id="LanguageMenuPanel"> <div class="DDStyle_outer"><input name="LanguageMenu_svid" type="text" id="LanguageMenu_svid" style="display:none;" autocomplete="on" value="en" onclick="this.select()"> <input name="LanguageMenu_textid" type="text" id="LanguageMenu_textid" style="display:none;" autocomplete="on" onclick="this.select()"> <span onselectstart="return false" tabindex="0" class="DDStyle" id="__LanguageMenu_header" onclick="return LanguageMenu &amp;&amp; !LanguageMenu.Show(&#39;__LanguageMenu_popup&#39;, event);" onkeydown="return LanguageMenu &amp;&amp; !LanguageMenu.Show(&#39;__LanguageMenu_popup&#39;, event);">English</span> <div style="position:relative;text-align:left;left:0;"><div style="position:absolute;width:;left:0px;"><div class="DDStyle" style="display:none;" id="__LanguageMenu_popup"> <table id="LanguageMenu" border="0"> <tbody><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;ar&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#ar">Arabic</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;he&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#he">Hebrew</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;pl&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#pl">Polish</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;bg&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#bg">Bulgarian</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;hi&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#hi">Hindi</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;pt&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#pt">Portuguese</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;ca&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#ca">Catalan</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;mww&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#mww">Hmong Daw</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;ro&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#ro">Romanian</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;zh-CHS&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#zh-CHS">Chinese Simplified</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;hu&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#hu">Hungarian</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;ru&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#ru">Russian</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;zh-CHT&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#zh-CHT">Chinese Traditional</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;id&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#id">Indonesian</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;sk&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#sk">Slovak</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;cs&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#cs">Czech</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;it&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#it">Italian</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;sl&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#sl">Slovenian</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;da&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#da">Danish</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;ja&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#ja">Japanese</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;es&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#es">Spanish</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;nl&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#nl">Dutch</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;tlh&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#tlh">Klingon</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;sv&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#sv">Swedish</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;en&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#en">English</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;ko&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#ko">Korean</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;th&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#th">Thai</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;et&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#et">Estonian</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;lv&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#lv">Latvian</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;tr&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#tr">Turkish</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;fi&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#fi">Finnish</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;lt&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#lt">Lithuanian</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;uk&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#uk">Ukrainian</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;fr&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#fr">French</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;ms&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#ms">Malay</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;ur&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#ur">Urdu</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;de&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#de">German</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;mt&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#mt">Maltese</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;vi&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#vi">Vietnamese</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;el&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#el">Greek</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;no&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#no">Norwegian</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;cy&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#cy">Welsh</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;ht&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#ht">Haitian Creole</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;fa&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://codelearn.io/sharing/ma-tran-co-ban-voi-thu-vien-numpy#fa">Persian</a></td><td></td> </tr> </tbody></table> <img alt="" style="height:7px;width:17px;border-width:0px;left:20px;"> </div></div></div></div> <script type="text/javascript"> var LanguageMenu; var LanguageMenu_keys=["ar","bg","ca","zh-CHS","zh-CHT","cs","da","nl","en","et","fi","fr","de","el","ht","he","hi","mww","hu","id","it","ja","tlh","ko","lv","lt","ms","mt","no","fa","pl","pt","ro","ru","sk","sl","es","sv","th","tr","uk","ur","vi","cy"]; var LanguageMenu_values=["Arabic","Bulgarian","Catalan","Chinese Simplified","Chinese Traditional","Czech","Danish","Dutch","English","Estonian","Finnish","French","German","Greek","Haitian Creole","Hebrew","Hindi","Hmong Daw","Hungarian","Indonesian","Italian","Japanese","Klingon","Korean","Latvian","Lithuanian","Malay","Maltese","Norwegian","Persian","Polish","Portuguese","Romanian","Russian","Slovak","Slovenian","Spanish","Swedish","Thai","Turkish","Ukrainian","Urdu","Vietnamese","Welsh"]; var LanguageMenu_callback=function(){ }; var LanguageMenu_popupid='__LanguageMenu_popup'; </script> </div> <div id="CTFLinksPanel"> <span id="ExternalLinksPanel"><a id="HelpLink" title="Help" target="_blank" href="https://go.microsoft.com/?linkid=9722454"> <img id="HelpImg"></a> <a id="EmbedLink" href="javascript:Microsoft.Translator.FloaterShowEmbed()" title="Get this widget for your own site"> <img id="EmbedImg"></a> <a id="ShareLink" title="Share translated page with friends" href="javascript:Microsoft.Translator.FloaterShowSharePanel()"> <img id="ShareImg"></a> </span> </div> <div id="FloaterProgressBar"> <span id="ProgressFill"></span> </div> </div> <div id="WidgetFloaterCollapsed" style="display: none" onmouseover="Microsoft.Translator.OnMouseOverFloater()"> <span>TRANSLATE with </span><img id="CollapsedLogoImg"></div> <div id="FloaterSharePanel" style="display: none"> <div id="ShareTextDiv"> <span id="ShareTextSpan"> COPY THE URL BELOW </span> </div> <div id="ShareTextboxDiv"> <input name="ShareTextbox" type="text" id="ShareTextbox" readonly="readonly" onclick="this.select()"> <!--a id="TwitterLink" title="Share on Twitter"> <img id="TwitterImg" /></a> <a-- id="FacebookLink" title="Share on Facebook"> <img id="FacebookImg" /></a--> <a id="EmailLink" title="Email this translation"> <img id="EmailImg"></a> </div> <div id="ShareFooter"> <span id="ShareHelpSpan"><a id="ShareHelpLink"> <img id="ShareHelpImg"></a></span> <span id="ShareBackSpan"><a id="ShareBack" href="javascript:Microsoft.Translator.FloaterOnShareBackClick()" title="Back To Translation"> Back</a></span> </div> <input name="EmailSubject" type="hidden" id="EmailSubject" value="Check out this page in {0} translated from {1}"> <input name="EmailBody" type="hidden" id="EmailBody" value="Translated: {0}%0d%0aOriginal: {1}%0d%0a%0d%0aAutomatic translation powered by Microsoft® Translator%0d%0ahttp://www.bing.com/translator?ref=MSTWidget"> <input type="hidden" id="ShareHelpText" value="This link allows visitors to launch this page and automatically translate it to {0}."> </div> <div id="FloaterEmbed" style="display: none"> <div id="EmbedTextDiv"> <span id="EmbedTextSpan">EMBED THE SNIPPET BELOW IN YOUR SITE</span> <a id="EmbedHelpLink" title="Copy this code and place it into your HTML."> <img id="EmbedHelpImg"></a> </div> <div id="EmbedTextboxDiv"> <input name="EmbedSnippetTextBox" type="text" id="EmbedSnippetTextBox" readonly="readonly" value="&lt;div id=&#39;MicrosoftTranslatorWidget&#39; class=&#39;Dark&#39; style=&#39;color:white;background-color:#555555&#39;&gt;&lt;/div&gt;&lt;script type=&#39;text/javascript&#39;&gt;setTimeout(function(){var s=document.createElement(&#39;script&#39;);s.type=&#39;text/javascript&#39;;s.charset=&#39;UTF-8&#39;;s.src=((location &amp;&amp; location.href &amp;&amp; location.href.indexOf(&#39;https&#39;) == 0)?&#39;https://ssl.microsofttranslator.com&#39;:&#39;http://www.microsofttranslator.com&#39;)+&#39;/ajax/v3/WidgetV3.ashx?siteData=ueOIGRSKkd965FeEGM5JtQ**&amp;ctf=true&amp;ui=true&amp;settings=manual&amp;from=en&#39;;var p=document.getElementsByTagName(&#39;head&#39;)[0]||document.documentElement;p.insertBefore(s,p.firstChild); },0);&lt;/script&gt;" onclick="this.select()"> </div> <div id="EmbedNoticeDiv"><span id="EmbedNoticeSpan">Enable collaborative features and customize widget: <a href="http://www.bing.com/widget/translator" target="_blank">Bing Webmaster Portal</a></span></div> <div id="EmbedFooterDiv"><span id="EmbedBackSpan"><a href="javascript:Microsoft.Translator.FloaterOnEmbedBackClick()" title="Back To Translation">Back</a></span></div> </div> <script type="text/javascript"> var intervalId = setInterval(function () { if (MtPopUpList) { LanguageMenu = new MtPopUpList(); var langMenu = document.getElementById(LanguageMenu_popupid); var origLangDiv = document.createElement("div"); origLangDiv.id = "OriginalLanguageDiv"; origLangDiv.innerHTML = "<span id='OriginalTextSpan'>ORIGINAL: </span><span id='OriginalLanguageSpan'></span>"; langMenu.appendChild(origLangDiv); LanguageMenu.Init('LanguageMenu', LanguageMenu_keys, LanguageMenu_values, LanguageMenu_callback, LanguageMenu_popupid); window["LanguageMenu"] = LanguageMenu; clearInterval(intervalId); } }, 1); </script> </div><iframe id="ssIFrame_google" sandbox="allow-scripts allow-same-origin allow-storage-access-by-user-activation" aria-hidden="true" frame-border="0" style="position: absolute; width: 1px; height: 1px; inset: -9999px; display: none;" src="./Code Learn_files/iframe.html" width="1536" height="1536"></iframe></body></html>

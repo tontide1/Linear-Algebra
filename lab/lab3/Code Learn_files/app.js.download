@@ -1,0 +1,502 @@
+// =======================================
+// EDV Embedded App SDK v1.0.3
+// =======================================
+const transformScriptTags = () => {
+  (function () {
+    // ---------------------------------------------------------------------------------
+    // EDV Embedded App SDK - Global Resources
+    //
+    // This is place for all EDV js api global resources like: functions, variables, configs,...
+    // ---------------------------------------------------------------------------------
+    window._EDV || (window._EDV = {});
+
+    const DOMAIN =
+      window.location.host === "codelearn.io" || window.location.host === "verify.codelearn.io"
+        ? "https://chat.codelearn.io"
+        : "https://test-chat.codelearn.io";
+
+    const printLog = function (...message) {
+      // console.log(...message);
+    };
+
+    function setCookie(name, value, daysToExpire) {
+      const expirationDate = new Date();
+      expirationDate.setTime(expirationDate.getTime() + daysToExpire * 24 * 60 * 60 * 1000);
+      const expires = "expires=" + expirationDate.toUTCString();
+      document.cookie = name + "=" + value + "; " + expires;
+    }
+
+    function getCookie(name) {
+      const cookieName = name + "=";
+      const decodedCookie = decodeURIComponent(document.cookie);
+      const cookieArray = decodedCookie.split(";");
+      for (let i = 0; i < cookieArray.length; i++) {
+        let cookie = cookieArray[i].trim();
+        if (cookie.indexOf(cookieName) === 0) {
+          return cookie.substring(cookieName.length, cookie.length);
+        }
+      }
+      return null; // Return null if the cookie is not found
+    }
+
+    function getDateFromCookie(name) {
+      const dateStr = getCookie(name);
+      if (dateStr) {
+        return new Date(dateStr);
+      }
+      return null;
+    }
+
+    _EDV.Message = (function () {
+      function Message() {}
+
+      Message.name = "Message";
+
+      Message.init = function () {
+        this.bindEvents();
+        this.bindRootDOM();
+        this.bindFriendButtonDOM();
+        this.bindChatWindowsDOM();
+        this.bindNotifyUsername();
+        this.bindNotify();
+      };
+
+      Message.bindEvents = function () {
+        window.addEventListener("message", this.__addEventMessageCallback.bind(this), false);
+      };
+
+      Message.bindNotify = function () {
+        const containerRef = document.querySelector(".notify > .dropdown-menu");
+        if (!containerRef) return;
+        const styleElement = document.createElement("style");
+        styleElement.textContent = `
+                    #app-notify-iframe {
+                      visibility: visible;
+                      width: 430px;
+                      height: 480px;
+                      max-width: 100vw;
+                      max-height: 82vh;
+                      border: none;
+                      background-color: #fff;
+                      display: block;
+                      overflow: hidden;
+                    }
+                    .notify .dropdown-menu {
+                      border: none;
+                      border-radius: 10px;
+                      overflow: hidden;
+                    }
+                    `;
+        document.head.appendChild(styleElement);
+
+        const newContent = document.createElement("div");
+        newContent.innerHTML = `<iframe allowtransparency="true" src="${DOMAIN}/notify" id="app-notify-iframe"></iframe>`;
+        containerRef.innerHTML = "";
+        containerRef.appendChild(newContent);
+
+        $("#notify").on("click", () => {
+          const isOpen = $("#notify").attr("aria-expanded");
+          window._EDV.Message.postMessage("EDV.API.Notify.toggle", isOpen);
+        });
+      };
+
+      Message.bindNotifyUsername = function () {
+        if (window.location.pathname === "/user/information/changeusername") {
+          return;
+        }
+        const keyTime = `CLOSE_NOTIFY_USERNAME_${CurrentUserId}_TIME`;
+        const lastClosedTime = getDateFromCookie(keyTime);
+        if (lastClosedTime instanceof Date) {
+          const currentDate = new Date();
+          lastClosedTime.setDate(lastClosedTime.getDate() + 1);
+          if (currentDate < lastClosedTime) {
+            return;
+          }
+        }
+
+        const refUserInfo = document.getElementsByClassName("btn--img")?.[0];
+        const username = refUserInfo?.getAttribute("alt");
+        if (username && username.includes("@")) {
+          const message =
+            LANG_CURRENT === "en"
+              ? "Your account has been limited in some features due to the lack of an updated account name. Update it here now!"
+              : "Tài khoản của bạn bị giới hạn một số tính năng do chưa cập nhật tên tài khoản. Cập nhật ngay tại đây!";
+          const styleElement = document.createElement("style");
+          styleElement.textContent = `
+            .notify-username {
+              position: fixed;
+              width: 500px;
+              max-width: 90vw;
+              gap: 4px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              border-radius: 4px;
+              z-index: 2147483644;
+              top: 80px;
+              right: 50px;
+              cursor: pointer;
+              background: #fff;
+              padding: 15px 15px 15px 24px;
+              box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 3px, rgba(0, 0, 0, 0.05) 0px 28px 23px -7px, rgba(0, 0, 0, 0.04) 0px 12px 12px -7px;
+              cursor: pointer;
+            }
+            .notify-username a:hover {
+              text-decoration: none !important;
+            }
+            .notify-username::before {
+              content: "";
+              display: block;
+              position: absolute;
+              width: 6px;
+              top: 4px;
+              bottom: 4px;
+              left: 4px;
+              border-radius: 4px;
+              background-color: rgb(250, 176, 5);
+            }
+            .close-btn {
+              height: 24px;
+              width: 24px;
+              display: flex;
+              flex: none;
+              border-radius: 4px;
+              align-items: center;
+              justify-content: center;
+            }
+            .close-btn:hover {
+              background: #f8f9fa;
+            }
+          `;
+          document.head.appendChild(styleElement);
+
+          const containerRef = $("footer .zone-footer");
+          if (!containerRef || !containerRef[0]) return;
+          const newContent = document.createElement("div");
+          newContent.innerHTML = `<div class="notify-username">
+                <a href="/user/information/changeusername">${message}</a>
+                <div class="close-btn" >
+                  <svg onclick="window._EDV.Message.closeNotifyUsername()" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" width="16" height="16"><path d="M11.7816 4.03157C12.0062 3.80702 12.0062 3.44295 11.7816 3.2184C11.5571 2.99385 11.193 2.99385 10.9685 3.2184L7.50005 6.68682L4.03164 3.2184C3.80708 2.99385 3.44301 2.99385 3.21846 3.2184C2.99391 3.44295 2.99391 3.80702 3.21846 4.03157L6.68688 7.49999L3.21846 10.9684C2.99391 11.193 2.99391 11.557 3.21846 11.7816C3.44301 12.0061 3.80708 12.0061 4.03164 11.7816L7.50005 8.31316L10.9685 11.7816C11.193 12.0061 11.5571 12.0061 11.7816 11.7816C12.0062 11.557 12.0062 11.193 11.7816 10.9684L8.31322 7.49999L11.7816 4.03157Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                </div>
+            </div>`;
+          containerRef[0].appendChild(newContent);
+        }
+      };
+
+      Message.closeNotifyUsername = function () {
+        const keyCount = `CLOSE_NOTIFY_USERNAME_${CurrentUserId}_COUNT`;
+        const keyTime = `CLOSE_NOTIFY_USERNAME_${CurrentUserId}_TIME`;
+        const closeCount = +getCookie(keyCount) || 0;
+        $(".notify-username").addClass("hide");
+        setCookie(keyCount, closeCount + 1, 365);
+        setCookie(keyTime, new Date().toUTCString(), 365);
+      };
+
+      Message.bindFriendButtonDOM = function () {
+        const containerRef = document.getElementById("contaner-friend");
+        const userId = +$("#contaner-friend").attr("data");
+        if (userId === CurrentUserId) return;
+        if (containerRef) {
+          const newContent = document.createElement("div");
+          newContent.innerHTML = `<iframe allowtransparency="true" src="${DOMAIN}/friend/${userId}" id="app-friend-button-iframe"></iframe>`;
+          const styleElement = document.createElement("style");
+          styleElement.textContent = `
+                    #edv-iframe-root {
+                      position: fixed;
+                      visibility: visible !important;
+                      top: 71px;
+                      left: 0;
+                      right: 0;
+                      bottom: 0;
+                      height: calc(100vh - 71px);
+                      width: 100%;
+                      border: none;
+                      background-color: #fff;
+                      display: block;
+                      z-index: 1000;
+                      overflow: hidden;
+                    }
+                    #contaner-friend {
+                      display: flex;
+                    }
+                    #contaner-friend > div {
+                      display: flex;
+                      margin: 0 auto;
+                      justify-content: center;
+                      overflow: hidden;
+                    }
+                    #app-friend-button-iframe {
+                      height: 36px;
+                      width: 250px;
+                      visibility: visible;
+                      display: block;
+                      border: none;
+                      background-color: #fff;
+                    }
+                  `;
+          document.head.appendChild(styleElement);
+          containerRef.appendChild(newContent);
+        }
+      };
+
+      Message.bindRootDOM = function () {
+        const containerRef = document.getElementById("chat-root");
+        if (containerRef) {
+          const newContent = document.createElement("div");
+          newContent.innerHTML = `<iframe allowtransparency="true" src="${DOMAIN}/chat" id="app-iframe-root" style="visibility: hidden; display: none"></iframe>`;
+          containerRef.appendChild(newContent);
+        } else {
+          console.error("EDV Embedded App SDK: not load container #chat-root");
+        }
+      };
+
+      Message.bindChatWindowsDOM = function () {
+        const newContent = document.createElement("div");
+        const content = `<iframe allowtransparency="true" src="${DOMAIN}/messages" id="app-iframe-chat-window" style="visibility: hidden; display: none"></iframe>`;
+        const containerRef = document.getElementById("chat-root");
+        if (containerRef) {
+          newContent.innerHTML = content;
+          containerRef.appendChild(newContent);
+        } else {
+          console.error("EDV Embedded App SDK: not load container #chat-root");
+        }
+      };
+
+      Message.__addEventMessageCallback = function (response) {
+        let responseData;
+        try {
+          responseData = JSON.parse(response.data);
+          printLog("Received: ", responseData);
+          this.exec(responseData.message, responseData.data);
+        } catch (ex) {
+          return void printLog("Received invalid JSON and cannot process the message. " + ex + " : ", response.data);
+        }
+      };
+
+      Message.openChatBox = function (data) {
+        let root = document.getElementById("app-iframe-root");
+        let chatWindow = document.getElementById("app-iframe-chat-window");
+        if ($(document).width() < 768) {
+          chatWindow.style.zIndex = -1;
+          chatWindow.style.display = "none";
+          root.style.zIndex = 2147490000;
+          root.style.display = "block";
+          this.postMessage("EDV.API.Chat.setChatWindows", data, ["app-iframe-root"]);
+        } else {
+          chatWindow.style.zIndex = 2147480000;
+          chatWindow.style.display = "block";
+          this.postMessage("EDV.API.ChatWindows.setChatWindows", data, ["app-iframe-chat-window"]);
+        }
+      };
+
+      Message.exec = function (message, data) {
+        let root = document.getElementById("app-iframe-root");
+        let chatWindow = document.getElementById("app-iframe-chat-window");
+        const windowWidth = $(window).width();
+        try {
+          switch (message) {
+            case "EDV.API.initial":
+              let intervalId = null;
+              let varCounter = 0;
+              intervalId = setInterval(function () {
+                let accessKey = sessionStorage.getItem("AccessKey");
+                const nottifyJwtToken = sessionStorage.getItem("NottifyJwtToken");
+                if (varCounter <= 240) {
+                  varCounter++;
+                  if (CurrentUserId && accessKey && window._EDV && window._EDV.Message) {
+                    clearInterval(intervalId);
+                    const styleElement = document.createElement("style");
+                    styleElement.textContent = `
+                    #app-iframe-root {
+                      position: fixed;
+                      visibility: visible !important;
+                      top: 0;
+                      right: 0;
+                      height: 100svh;
+                      width: 100%;
+                      border: none;
+                      background-color: transparent;
+                      display: none;
+                      z-index: -1;
+                      overflow: hidden;
+                      left: auto;
+                      max-width: 444px;
+                      box-shadow: 0 12px 28px 0 rgba(0,0,0,.2), 0 2px 4px 0 rgba(0,0,0,.1);
+                    }
+                    @media only screen and (min-width: 768px) {
+                      #app-iframe-root {
+                        right: 8px;
+                        top: 60px;
+                        bottom: auto;
+                        height: calc(100vh - 80px) !important;
+                      }
+                    }
+                    #app-iframe-chat-window {
+                      position: fixed;
+                      visibility: visible !important;
+                      top: auto;
+                      bottom: 0;
+                      left: auto;
+                      max-height: 470px;
+                      height: 100%;
+                      width: auto;
+                      overflow: hidden;
+                      right: 80px;
+                      border: none;
+                      background-color: transparent;
+                      display: none;
+                      z-index: -1;
+                    }
+                  `;
+                    document.head.appendChild(styleElement);
+                    window._EDV.Message.postMessage("EDV.API.Auth.token", {
+                      accessKey: accessKey,
+                      nottifyJwtToken: nottifyJwtToken,
+                    });
+                    $(".chat").removeClass("hide");
+                  }
+                } else {
+                  clearInterval(intervalId);
+                }
+              }, 500);
+              const refUserInfo = document.getElementsByClassName("btn--img")?.[0];
+              window._EDV.Message.postMessage("EDV.API.Auth.profile", {
+                id: CurrentUserId,
+                username: refUserInfo?.getAttribute("alt"),
+                avatar: refUserInfo?.getAttribute("src"),
+              });
+              window._EDV.Message.postMessage("EDV.API.LangGuest.initial", LANG_CURRENT);
+              break;
+            case "EDV.API.Chat.open":
+              if (windowWidth < 768) {
+                $("html, body").css("overflowY", "hidden");
+                $("html, body").css("height", "100svh");
+              }
+              root.style.zIndex = 2147490000;
+              root.style.display = "block";
+              break;
+            case "EDV.API.Chat.close":
+              if (windowWidth < 768) {
+                $("html, body").css("overflowY", "auto");
+                $("html, body").css("height", "unset");
+              }
+              root.style.zIndex = -1;
+              root.style.display = "none";
+              break;
+            case "EDV.API.Chat.openChatbox":
+              this.openChatBox(data);
+              break;
+            case "EDV.API.Notify.updateCount":
+              $("#notification-count").html(data);
+              break;
+            case "EDV.API.ChatWindows.set":
+              if ($(document).width() < 768) {
+                chatWindow.style.zIndex = -1;
+                chatWindow.style.display = "none";
+              } else {
+                chatWindow.style.zIndex = 2147480000;
+                chatWindow.style.display = "block";
+                this.postMessage("EDV.API.ChatWindows.setChatWindows", data, ["app-iframe-chat-window"]);
+              }
+              break;
+            case "EDV.API.ChatWindows.setWidth":
+              chatWindow.style.width = data;
+              break;
+            case "EDV.API.Chat.count":
+              const count = data;
+              const chatCountRef = document.getElementById("chat-count");
+              const cls = ["label", "label-warning"];
+              if (!chatCountRef) {
+                console.error("EDV Embedded App SDK: not load element #chat-count");
+                return;
+              }
+              if (count > 0) {
+                chatCountRef.classList.add(...cls);
+                chatCountRef.style.display = "flex";
+                chatCountRef.innerHTML = `<span>${count > 99 ? "99+" : count}</span>`;
+              } else {
+                chatCountRef.classList.remove(...cls);
+                chatCountRef.style.display = "none";
+              }
+              break;
+            case "EDV.API.ChatGPT.count":
+              const gptCount = data;
+              const chatGPTCountRef = document.getElementById("chatgpt-count");
+              const gptCls = ["label", "label-warning"];
+              if (!chatGPTCountRef) {
+                console.error("EDV Embedded App SDK: not load element #chat-count");
+                return;
+              }
+              if (gptCount > 0) {
+                chatGPTCountRef.classList.add(...gptCls);
+                chatGPTCountRef.style.display = "flex";
+                chatGPTCountRef.innerHTML = `<span>${gptCount > 99 ? "99+" : gptCount}</span>`;
+              } else {
+                chatGPTCountRef.classList.remove(...gptCls);
+                chatGPTCountRef.style.display = "none";
+              }
+              break;
+            case "EDV.API.Window.location.href":
+              window.location.href = data;
+              break;
+            case "EDV.API.ChatGPT.toggle":
+              console.log("EDV.API.ChatGPT.toggle");
+              break;
+            case "EDV.API.Notify.error":
+              if (NOFICATION_GLOBAL) {
+                NOFICATION_GLOBAL.update({ message: data, type: "codecamp-danger" });
+              } else {
+                $.notify(data, { type: "codecamp-danger" });
+              }
+              break;
+            default:
+              break;
+          }
+        } catch (e) {
+          console.log("Error execute message", message, data);
+        }
+      };
+
+      Message.postMessage = function (
+        message,
+        data,
+        elements = ["app-iframe-root", "app-iframe-chat-window", "app-friend-button-iframe", "app-notify-iframe"]
+      ) {
+        let postData = JSON.stringify({
+          message: message,
+          data: data,
+        });
+        printLog("Sent: ", postData);
+        elements.forEach((e) => {
+          let root = document.getElementById(e);
+          if (root && root.contentWindow) {
+            root.contentWindow.postMessage(postData, "*");
+          }
+        });
+        return void 0;
+      };
+
+      return Message;
+    })();
+
+    window._EDV.Message.init();
+
+    $(window).on("resize", function () {
+      const width = $(this).width();
+      if (width < 768) {
+        let chatWindow = document.getElementById("app-iframe-chat-window");
+        if (chatWindow) {
+          chatWindow.style.zIndex = -1;
+          chatWindow.style.display = "none";
+        }
+      }
+      window._EDV.Message.postMessage("EDV.API.width", width);
+    });
+  }.call(this));
+};
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", transformScriptTags, false);
+} else {
+  transformScriptTags();
+}
